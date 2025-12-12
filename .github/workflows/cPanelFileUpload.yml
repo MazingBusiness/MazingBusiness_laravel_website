@@ -1,0 +1,37 @@
+name: Deploy to cPanel (Live + Dev)
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set deploy directory
+        id: setdir
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "SERVER_DIR=/public_html/" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF_NAME}" == "development" ]]; then
+            echo "SERVER_DIR=/public_html/mazing_development/" >> $GITHUB_ENV
+          fi
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER_PUBLIC_HTML }}
+          username: ${{ secrets.FTP_USERNAME_PUBLIC_HTML }}
+          password: ${{ secrets.FTP_PASSWORD_PUBLIC_HTML }}
+          protocol: ftp
+          port: 21
+          local-dir: ./
+          server-dir: ${{ env.SERVER_DIR }}
