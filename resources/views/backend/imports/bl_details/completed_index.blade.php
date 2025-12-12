@@ -1,0 +1,117 @@
+@extends('backend.layouts.app')
+
+@section('content')
+<div class="aiz-main-content">
+    <div class="px-15px px-lg-25px">
+        {{-- Page Header --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="mb-1">{{ translate('Completed Bills of Lading') }}</h5>
+                <div class="small text-muted">
+                    {{ translate('Showing BL records with status "completed".') }}
+                </div>
+            </div>
+        </div>
+
+        {{-- Search --}}
+        <form method="GET" action="{{ route('import_bl_details.completed') }}" class="mb-3">
+            <div class="input-group">
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control"
+                    value="{{ $search ?? request('search') }}"
+                    placeholder="{{ translate('Search BL No, Supplier, Import Company...') }}"
+                >
+
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="las la-search mr-1"></i>{{ translate('Search') }}
+                    </button>
+
+                    @if(request('search'))
+                        <a href="{{ route('import_bl_details.completed') }}"
+                           class="btn btn-outline-danger">
+                            <i class="las la-times"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </form>
+
+        {{-- Card --}}
+        <div class="card">
+            <div class="card-body">
+                @if($blHeaders->isEmpty())
+                    <div class="alert alert-info mb-0">
+                        {{ translate('No completed BL found.') }}
+                    </div>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 40px;">#</th>
+                                    <th>{{ translate('BL No') }}</th>
+                                    <th>{{ translate('Import Company') }}</th>
+                                    <th>{{ translate('O/B Date') }}</th>
+                                    <th>{{ translate('Vessel Name') }}</th>
+                                    <th class="text-right">{{ translate('Packages') }}</th>
+                                    <th class="text-right">{{ translate('Gross Wt') }}</th>
+                                    <th class="text-right">{{ translate('CBM') }}</th>
+                                    <th class="text-center">{{ translate('Items') }}</th>
+                                    <th style="width: 80px;" class="text-center">{{ translate('Action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($blHeaders as $index => $bl)
+                                    @php
+                                        $items = $bl->items ?? collect();
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $blHeaders->firstItem() + $index }}</td>
+                                        <td>{{ $bl->bl_no ?? '-' }}</td>
+                                        <td>{{ optional($bl->importCompany)->company_name ?? '-' }}</td>
+                                        <td>
+                                            @if($bl->ob_date)
+                                                {{ \Carbon\Carbon::parse($bl->ob_date)->format('d/m/Y') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>{{ $bl->vessel_name ?? '-' }}</td>
+                                        <td class="text-right">
+                                            {{ number_format((float)($bl->no_of_packages ?? 0), 0) }}
+                                        </td>
+                                        <td class="text-right">
+                                            {{ number_format((float)($bl->gross_weight ?? 0), 2) }}
+                                        </td>
+                                        <td class="text-right">
+                                            {{ number_format((float)($bl->gross_cbm ?? 0), 3) }}
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-soft-primary">
+                                                {{ $items->count() }} {{ translate('items') }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{{ route('import_bl_details.completed.show', $bl->id) }}"
+                                               class="btn btn-xs btn-outline-primary">
+                                                <i class="las la-eye mr-1"></i>{{ translate('View') }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-3">
+                        {{ $blHeaders->links() }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
