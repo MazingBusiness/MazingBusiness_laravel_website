@@ -1,0 +1,62 @@
+name: Deploy to cPanel (Live + Dev)
+
+on:
+  push:
+    branches: [ main, development ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # MAIN → public_html (LIVE)
+      - name: Deploy LIVE (main)
+        if: github.ref_name == 'main'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER_PUBLIC_HTML }}
+          username: ${{ secrets.FTP_USERNAME_PUBLIC_HTML }}
+          password: ${{ secrets.FTP_PASSWORD_PUBLIC_HTML }}
+          protocol: ftp
+          port: 21
+          local-dir: ./
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/vendor/**
+            **/.env
+            **/.env.*
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**
+
+      # DEVELOPMENT → public_html/mazing_development (DEV)
+      - name: Deploy DEV (development)
+        if: github.ref_name == 'development'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER_PUBLIC_HTML }}
+          username: ${{ secrets.FTP_USERNAME_PUBLIC_HTML }}
+          password: ${{ secrets.FTP_PASSWORD_PUBLIC_HTML }}
+          protocol: ftp
+          port: 21
+          local-dir: ./
+          server-dir: /public_html/mazing_development/
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/vendor/**
+            **/.env
+            **/.env.*
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**
