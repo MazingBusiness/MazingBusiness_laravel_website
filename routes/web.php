@@ -513,7 +513,6 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     Route::get('/send-reward-whatsapp', 'sendRewardWhatsapp')->name('sendRewardWhatsapp');
   });
   Route::get('/transaction-details', [CheckoutController::class, 'transactionDetails'])->name('transactionDetails');
-  
 
   // Wishlist
   Route::resource('wishlists', WishlistController::class);
