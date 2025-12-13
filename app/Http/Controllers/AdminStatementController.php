@@ -560,7 +560,7 @@ public function back_assignManager(Request $request)
         $address_2 = $userAddress->address_2 ?? '';
         $postal_code = $userAddress->postal_code ?? '';
 
-        $userAddressData = Address::where('user_id', $userData->id)->groupBy('gstin')->orderBy('acc_code','ASC')->get();
+        // $userAddressData = Address::where('user_id', $userId)->select('gstin')->whereNotNull('gstin')->distinct()->orderBy('gstin')->get();
         $dueAmount = '0.00';
         $overdueAmount = '0.00';
 
@@ -4367,7 +4367,7 @@ private function createValidObject($jsonPart)
         }
 
         set_time_limit(-1);
-
+        
         // Allowed user IDs
         $allowedUserIds = [1, 180, 169, 25606];
         $loggedInUser   = auth()->user();
@@ -4601,7 +4601,6 @@ private function createValidObject($jsonPart)
             )
             ->paginate(50)
             ->appends($request->query());
-
         // Refresh due/overdue via your existing function and attach bucket amounts
         foreach ($customers as $cusKey) {
             $tmpReq   = new Request(['party_code' => $cusKey->acc_code]);
@@ -4621,7 +4620,6 @@ private function createValidObject($jsonPart)
                 if ($overdueBucketThreshold === 120) $cusKey->overdue_120_amount = $amount;
             }
         }
-
         return view('backend.statement.statement', compact(
             'managers',
             'warehouses',
@@ -5260,7 +5258,8 @@ private function createValidObject($jsonPart)
         $userAddress = Address::where('acc_code', $request->party_code)->first();
 
         $userData = User::where('id', $userAddress->user_id)->first();
-        $userAddressData = Address::where('user_id', $userAddress->user_id)->groupBy('gstin')->orderBy('acc_code','ASC')->get();
+        // $userAddressData = Address::where('user_id', $userAddress->user_id)->groupBy('gstin')->orderBy('acc_code','ASC')->get();
+        
         $dueAmount = '0.00';
         $overdueAmount = '0.00';
 
