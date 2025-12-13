@@ -75,7 +75,7 @@ use App\Http\Controllers\Manager41OrderLogisticsController;
 use App\Http\Controllers\ImportCommercialInvoiceController;
 use App\Http\Controllers\ImportCartController;
 use App\Http\Controllers\PdfContentController;
-
+use App\Http\Controllers\ImportPoController;
 /*
 |--------------------------------------------------------------------------
 | Admin Routes 
@@ -86,7 +86,13 @@ use App\Http\Controllers\PdfContentController;
 | contains the "web" middleware group. Now create something great!
 |
  */
- 
+ Route::controller(ImportPoController::class)->group(function () {
+    Route::get('import-pos/create', [ImportPoController::class, 'create'])->name('import_pos.create');
+    Route::post('import-pos',        [ImportPoController::class, 'store'])->name('import_pos.store');
+    
+    Route::get('import-pos/products-search', [ImportPoController::class, 'importProductsAjaxSearch'])
+    ->name('import.pos.ajax.products_search');
+});
  
 Route::controller(PdfContentController::class)->group(function () {
     Route::get('/pdf-contents', 'index')->name('pdf_contents.index');
@@ -1270,6 +1276,12 @@ Route::prefix('admin/import')->group(function () {
 
     Route::get('import/bl-details/{bl}/ci-summary/complete', [ImportCartController::class, 'completeCiForBl'])
     ->name('import.bl.ci_summary.complete');
+    
+    
+     Route::get('template/create', [ImportCartController::class, 'createTemplate'])
+    ->name('create');
+    Route::post('store', [ImportCartController::class, 'storeTemplate'])
+        ->name('import_templates.store');
 });
 
 

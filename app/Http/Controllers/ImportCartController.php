@@ -20,7 +20,7 @@ use App\Mail\CiPlZipMail;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use App\Services\NoReplyMailer;
-
+use App\Models\Template;
 class ImportCartController extends Controller
 {
     // Cart listing for a BL
@@ -455,7 +455,7 @@ class ImportCartController extends Controller
 
             if ($invoiceNos->isNotEmpty()) {
                 BlItemDetail::where('bl_id', $bl->id)
-                    ->whereIn('supplier_invoice_no', $invoiceNos)
+                    // ->whereIn('supplier_invoice_no', $invoiceNos)
                     ->delete();
             }
 
@@ -889,7 +889,7 @@ class ImportCartController extends Controller
 
             // 🔹 Generate Commercial Invoice PDF for THIS supplier
             $pdfCI = \Barryvdh\DomPDF\Facade\Pdf::loadView(
-                'backend.imports.ci.commercial_invoice_pdf',
+                'backend.imports.ci.templates.commercial_invoice_pdf',
                 [
                     'bl'       => $bl,
                     'company'  => $bl->importCompany,
@@ -899,7 +899,7 @@ class ImportCartController extends Controller
 
             // 🔹 Generate Packing List PDF for THIS supplier
             $pdfPL = \Barryvdh\DomPDF\Facade\Pdf::loadView(
-                'backend.imports.ci.packing_list_pdf',
+                'backend.imports.ci.templates.templates.packing_list_pdf',
                 [
                     'bl'       => $bl,
                     'company'  => $bl->importCompany,
@@ -1079,7 +1079,7 @@ class ImportCartController extends Controller
             $singleInvoiceCollection = collect([$invoice]);
 
             $pdfCI = Pdf::loadView(
-                'backend.imports.ci.commercial_invoice_pdf',
+                'backend.imports.ci.templates.ci_template_4',
                 [
                     'bl'       => $bl,
                     'company'  => $bl->importCompany,
@@ -1193,7 +1193,7 @@ class ImportCartController extends Controller
             $singleInvoiceCollection = collect([$invoice]);
 
             $pdfPL = Pdf::loadView(
-                'backend.imports.ci.packing_list_pdf',
+                'backend.imports.ci.templates.pl_template_4',
                 [
                     'bl'       => $bl,
                     'company'  => $bl->importCompany,
@@ -1230,6 +1230,32 @@ class ImportCartController extends Controller
             'Pragma'        => 'no-cache',
             'Expires'       => '0',
         ])->deleteFileAfterSend(true);
+    }
+
+
+    public function createTemplate()
+    {   
+        
+
+        return view('backend.imports.ci.templates.create');
+    }
+
+    public function storeTemplate(Request $request)
+    {
+        $data = $request->validate([
+            'name'    => 'required|string|max:191',
+            'ci_view' => 'required|string|max:191',
+            'pl_view' => 'required|string|max:191',
+            'is_active' => 'nullable|in:0,1',
+        ]);
+
+        $data['is_active'] = $data['is_active'] ?? 1;
+
+        Template::create($data);
+
+        return redirect()
+            ->route('import_templates.create')
+            ->with('success', 'Template created successfully.');
     }
 
 

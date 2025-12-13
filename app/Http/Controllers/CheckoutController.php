@@ -111,7 +111,7 @@ class CheckoutController extends Controller {
       
    
       // if(Auth::user()->id == '24185'){
-       
+      //  echo "<pre>"; print_r($request->all()); die;
         (new OrderController)->store($request);
         $carts = Cart::where('user_id', Auth::user()->id)->get();
         
