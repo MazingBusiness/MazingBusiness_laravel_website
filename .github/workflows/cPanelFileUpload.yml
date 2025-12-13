@@ -24,7 +24,7 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./
-          server-dir: /public_html/
+          server-dir: /
           exclude: |
             **/.git*
             **/.github/**
@@ -48,7 +48,7 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./
-          server-dir: /public_html/mazing_development/
+          server-dir: /mazing_development/
           exclude: |
             **/.git*
             **/.github/**
