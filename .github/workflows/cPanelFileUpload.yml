@@ -6,14 +6,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  ftp-deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Deploy MAIN → /public_html/
-      - name: FTP Deploy (LIVE)
+      # MAIN → public_html (LIVE)
+      - name: Deploy LIVE (main)
         if: github.ref_name == 'main'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -23,10 +24,21 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./
-          server-dir: /
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/vendor/**
+            **/.env
+            **/.env.*
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**
 
-      # Deploy DEVELOPMENT → /public_html/mazing_development/
-      - name: FTP Deploy (DEV)
+      # DEVELOPMENT → public_html/mazing_development (DEV)
+      - name: Deploy DEV (development)
         if: github.ref_name == 'development'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -36,4 +48,15 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./
-          server-dir: /mazing_development/
+          server-dir: /public_html/mazing_development/
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/vendor/**
+            **/.env
+            **/.env.*
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**
