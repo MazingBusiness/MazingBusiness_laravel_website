@@ -25,17 +25,29 @@ jobs:
           port: 21
           local-dir: ./
           server-dir: /
+          # exclude: |
+          #   **/.git*
+          #   **/.github/**
+          #   **/node_modules/**
+          #   **/vendor/**
+          #   **/.env
+          #   **/.env.*
+          #   **/storage/logs/**
+          #   **/storage/framework/cache/**
+          #   **/storage/framework/sessions/**
+          #   **/storage/framework/views/**
+
           exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
-            **/vendor/**
-            **/.env
-            **/.env.*
-            **/storage/logs/**
-            **/storage/framework/cache/**
-            **/storage/framework/sessions/**
-            **/storage/framework/views/**
+            .git/**
+            .github/**
+            node_modules/**
+            vendor/**
+            .env
+            .env.*
+            storage/logs/**
+            storage/framework/cache/**
+            storage/framework/sessions/**
+            storage/framework/views/**
 
       # DEVELOPMENT → public_html/mazing_development (DEV)
       - name: Deploy DEV (development)
@@ -49,14 +61,26 @@ jobs:
           port: 21
           local-dir: ./
           server-dir: /mazing_development/
+          # exclude: |
+          #   **/.git*
+          #   **/.github/**
+          #   **/node_modules/**
+          #   **/vendor/**
+          #   **/.env
+          #   **/.env.*
+          #   **/storage/logs/**
+          #   **/storage/framework/cache/**
+          #   **/storage/framework/sessions/**
+          #   **/storage/framework/views/**
+
           exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
-            **/vendor/**
-            **/.env
-            **/.env.*
-            **/storage/logs/**
-            **/storage/framework/cache/**
-            **/storage/framework/sessions/**
-            **/storage/framework/views/**
+            .git/**
+            .github/**
+            node_modules/**
+            vendor/**
+            .env
+            .env.*
+            storage/logs/**
+            storage/framework/cache/**
+            storage/framework/sessions/**
+            storage/framework/views/**
