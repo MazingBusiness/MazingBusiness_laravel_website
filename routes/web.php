@@ -85,6 +85,9 @@ Route::get('/update-download-pdf-status', [PdfController::class, 'updateDownload
 // Payment
 Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('webhook');
 
+//static webpage for mobile
+Route::view('/mobile', 'mobile.index')->name('mobile.landing');
+
 Route::controller(DemoController::class)->group(function () {
   Route::get('/demo/cron_1', 'cron_1');
   Route::get('/demo/cron_2', 'cron_2');
@@ -510,7 +513,6 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     Route::get('/send-reward-whatsapp', 'sendRewardWhatsapp')->name('sendRewardWhatsapp');
   });
   Route::get('/transaction-details', [CheckoutController::class, 'transactionDetails'])->name('transactionDetails');
-  
 
   // Wishlist
   Route::resource('wishlists', WishlistController::class);

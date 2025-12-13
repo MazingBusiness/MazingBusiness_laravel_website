@@ -2167,7 +2167,18 @@ private function createValidObject($jsonPart)
     {
         try{
             $userData = User::where('id', Auth::user()->id)->first();
-            $userAddressData = Address::where('user_id', Auth::user()->id)->groupBy('gstin')->orderBy('acc_code','ASC')->get();
+
+            $ids = Address::where('user_id', Auth::user()->id)
+                ->whereNotNull('gstin')
+                ->select(DB::raw('MIN(id) as id'))   // or MAX(id)
+                ->groupBy('gstin')
+                ->pluck('id');
+
+            $userAddressData = Address::whereIn('id', $ids)
+                ->orderBy('acc_code', 'ASC')
+                ->get();
+            // $userAddressData = Address::where('user_id', Auth::user()->id)->groupBy('gstin')->orderBy('acc_code','ASC')->get();
+
             $dueAmount = '0.00';
             $overdueAmount = '0.00';
 

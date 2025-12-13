@@ -3191,7 +3191,7 @@ public function all_orders(Request $request)
                         'tax'              => (($orderDetailsData->price / max(1, (int)$orderDetailsData->quantity)) * 0.18),
                         'sub_order_id'     => $sub_order_id,
                         'order_details_id' => $odValue,
-                        'challan_quantity' => null,
+                        'challan_quantity' => 0,
                         'approved_quantity'=> $quantity,
                         'closing_qty'      => $closingStock,
                         'approved_rate'    => $request['rate_'.$odValue] ?? null,
@@ -3421,7 +3421,7 @@ public function all_orders(Request $request)
                             'tax'              => (($orderDetailsData->price / max(1, (int)$orderDetailsData->quantity)) * 0.18),
                             'sub_order_id'     => $other_sub_order_id,
                             'order_details_id' => $odValue,
-                            'challan_quantity' => null,
+                            'challan_quantity' => 0,
                             'approved_quantity'=> $quantity,
                             'closing_qty'      => $closingStock,
                             'approved_rate'    => $request['rate_'.$odValue] ?? null,
@@ -3703,8 +3703,8 @@ public function saveSplitOrder(Request $request){
                     $btrSplitOrderDetails['tax']               = (($orderDetailsData->price / $orderDetailsData->quantity) * 0.18 );
                     $btrSplitOrderDetails['sub_order_id']      = $sub_order_id;
                     $btrSplitOrderDetails['order_details_id']  = $odValue;
-                    $btrSplitOrderDetails['challan_quantity']  = "";
-                    $btrSplitOrderDetails['pre_close_quantity']= "";
+                    $btrSplitOrderDetails['challan_quantity']  = "0";
+                    $btrSplitOrderDetails['pre_close_quantity']= "0";
                     $btrSplitOrderDetails['approved_quantity'] = $quantity;
                     $btrSplitOrderDetails['closing_qty']       = $closingStock;
                     $btrSplitOrderDetails['approved_rate']     = $request['rate_'.$odValue];
@@ -3978,8 +3978,8 @@ public function saveSplitOrder(Request $request){
                         $btrSplitOrderDetails['tax']               = (($orderDetailsData->price / $orderDetailsData->quantity) * 0.18 );
                         $btrSplitOrderDetails['sub_order_id']      = $other_branch_sub_order_id;
                         $btrSplitOrderDetails['order_details_id']  = $odValue;
-                        $btrSplitOrderDetails['challan_quantity']  = "";
-                        $btrSplitOrderDetails['pre_close_quantity']= "";
+                        $btrSplitOrderDetails['challan_quantity']  = "0";
+                        $btrSplitOrderDetails['pre_close_quantity']= "0";
                         $btrSplitOrderDetails['approved_quantity'] = $quantity;
                         $btrSplitOrderDetails['closing_qty']       = $closingStock;
                         $btrSplitOrderDetails['approved_rate']     = $request['rate_'.$odValue];
@@ -5204,8 +5204,8 @@ public function updateWarrantyForProduct($product_id, $warranty_duration){
             $btrSplitOrderDetails['tax'] = (($orderDetailsData->price / $orderDetailsData->quantity) * 0.18 );
             $btrSplitOrderDetails['sub_order_id'] = $sub_order_id;
             $btrSplitOrderDetails['order_details_id'] = $odValue;
-            $btrSplitOrderDetails['challan_quantity'] = "";
-            $btrSplitOrderDetails['pre_close_quantity'] = "";
+            $btrSplitOrderDetails['challan_quantity'] = "0";
+            $btrSplitOrderDetails['pre_close_quantity'] = "0";
             $btrSplitOrderDetails['approved_quantity'] = $quantity;
             $btrSplitOrderDetails['approved_rate'] = $request['rate_'.$odValue];
             $btrSplitOrderDetails['warehouse_id'] = $homwBranchId;
@@ -5393,8 +5393,8 @@ public function updateWarrantyForProduct($product_id, $warranty_duration){
               $btrSplitOrderDetails = array();
               $btrSplitOrderDetails['sub_order_id'] = $other_branch_sub_order_id;
               $btrSplitOrderDetails['order_details_id'] = $odValue;
-              $btrSplitOrderDetails['challan_quantity'] = "";
-              $btrSplitOrderDetails['pre_close_quantity'] = "";
+              $btrSplitOrderDetails['challan_quantity'] = "0";
+              $btrSplitOrderDetails['pre_close_quantity'] = "0";
               $btrSplitOrderDetails['approved_quantity'] = $quantity;
               $btrSplitOrderDetails['approved_rate'] = $request['rate_'.$odValue];
               $btrSplitOrderDetails['warehouse_id'] = $owKey;
@@ -5663,8 +5663,8 @@ public function updateWarrantyForProduct($product_id, $warranty_duration){
               $btrSplitOrderDetails['tax'] = (($orderDetailsData->price / $orderDetailsData->quantity) * 0.18 );
               $btrSplitOrderDetails['sub_order_id'] = $sub_order_id;
               $btrSplitOrderDetails['order_details_id'] = $odValue;
-              $btrSplitOrderDetails['challan_quantity'] = "";
-              $btrSplitOrderDetails['pre_close_quantity'] = "";
+              $btrSplitOrderDetails['challan_quantity'] = "0";
+              $btrSplitOrderDetails['pre_close_quantity'] = "0";
               $btrSplitOrderDetails['approved_quantity'] = $quantity;
               $btrSplitOrderDetails['approved_rate'] = $request['rate_'.$odValue];
               $btrSplitOrderDetails['warehouse_id'] = $homwBranchId;
@@ -5863,8 +5863,8 @@ public function updateWarrantyForProduct($product_id, $warranty_duration){
               $btrSplitOrderDetails['tax'] = (($orderDetailsData->price / $orderDetailsData->quantity) * 0.18 );
               $btrSplitOrderDetails['sub_order_id'] = $other_branch_sub_order_id;
               $btrSplitOrderDetails['order_details_id'] = $odValue;
-              $btrSplitOrderDetails['challan_quantity'] = "";
-              $btrSplitOrderDetails['pre_close_quantity'] = "";
+              $btrSplitOrderDetails['challan_quantity'] = "0";
+              $btrSplitOrderDetails['pre_close_quantity'] = "0";
               $btrSplitOrderDetails['approved_quantity'] = $quantity;
               $btrSplitOrderDetails['approved_rate'] = $request['rate_'.$odValue];
               $btrSplitOrderDetails['warehouse_id'] = $owKey;
