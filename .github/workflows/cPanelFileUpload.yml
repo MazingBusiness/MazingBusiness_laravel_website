@@ -23,7 +23,7 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./
-          server-dir: /public_html/
+          server-dir: /
 
       # Deploy DEVELOPMENT → /public_html/mazing_development/
       - name: FTP Deploy (DEV)
@@ -36,4 +36,4 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./
-          server-dir: /public_html/mazing_development/
+          server-dir: /mazing_development/
