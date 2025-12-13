@@ -281,11 +281,10 @@ Route::controller(SearchController::class)->group(function () {
   Route::get('/get-cat-group-by-seller-wise', 'getCatGroupBySellerWise')->name('getCatGroupBySellerWise');
   Route::get('/get-categories-from-admin', 'getCategoriesFromAdmin')->name('getCategoriesFromAdmin');
   Route::get('/get-own-brand-categories-from-admin', 'getOwnBrandCategoriesFromAdmin')->name('getOwnBrandCategoriesFromAdmin');
-  
  
 });
 
-// Cart
+// Cart Section
 Route::controller(CartController::class)->group(function () {
   // Route::get('/cart', 'index')->name('cart');
   Route::get('/cart', 'cart_v03')->name('cart');
